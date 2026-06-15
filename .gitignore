@@ -12,19 +12,19 @@ dist/
 build/
 out/
 coverage/
- 
+
 # =========================
 # Playwright
 # =========================
 blob-report/
 playwright/.cache/
 .playwright/
- 
+
 # Playwright generated auth/session files
 playwright/.auth/
 storageState.json
 auth.json
- 
+
 # =========================
 # MCP Runtime / AI Outputs
 # =========================
@@ -33,18 +33,18 @@ logs/
 tmp/
 temp/
 .cache/
- 
+
 generated/
 generated-tests/
 generated-reports/
 generated-specs/
 generated-output/
- 
+
 # AI intermediate outputs
 ai-output/
 agent-output/
 execution-output/
- 
+
 # =========================
 # Reports
 # =========================
@@ -54,23 +54,22 @@ allure-results/
 allure-report/
 junit-report/
 mochawesome-report/
- 
+
 # =========================
 # Environment / Secrets
 # =========================
 .env
 .env.*
 !.env.example
- 
 secrets/
 keys/
 credentials/
- 
+
 # API/Auth secrets
 *.pem
 *.key
 *.crt
- 
+
 # =========================
 # Debug / Logs
 # =========================
@@ -79,13 +78,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
- 
+
 # =========================
 # OS Files
 # =========================
 .DS_Store
 Thumbs.db
- 
+
 # =========================
 # IDE / Editor
 # =========================
@@ -93,43 +92,38 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
- 
+
 # =========================
 # TypeScript
 # =========================
 *.tsbuildinfo
- 
- 
+
 # =========================
 # Package Managers
 # =========================
-package-lock.json
+# package-lock.json
 yarn.lock
 pnpm-lock.yaml
- 
+
 # Remove above lock ignores if team requires deterministic installs
- 
 # =========================
 # Docker
 # =========================
 .docker/
- 
 # =========================
 # CI/CD Secrets
 # =========================
 .github/*.local
 .gitlab/*.local
 .github/agents
- 
 # =========================
 # Misc
 # =========================
 *.zip
 *.tar
 *.gz
- 
+
 # Playwright
- 
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
