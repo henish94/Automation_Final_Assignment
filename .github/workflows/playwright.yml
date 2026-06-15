@@ -1,0 +1,82 @@
+name: Playwright Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_env:
+        description: "Select environment"
+        required: true
+        default: "qa"
+        type: choice
+        options:
+          - dev
+          - qa
+          - stage
+      testType:                    
+        description: "Select Test Suite"
+        required: true
+        type: choice
+        default: "all"
+        options:
+          - smoke
+          - regression
+          - all
+
+  push:
+    branches: [main, master, Day06-POM_Architecture, Day07-Environment_Configuration, Final_Assignment]
+
+  pull_request:
+    branches: [main, master, Day06-POM_Architecture, Day07-Environment_Configuration, Final_Assignment]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.test_env || 'qa' }}
+
+    env:
+      TEST_ENV: ${{ github.event.inputs.test_env || 'qa' }}
+      BASE_URL: ${{ secrets.BASE_URL }}
+      BOOKING_DETAILS: ${{ vars.BOOKING_DETAILS }}
+      BOARDING_CITY: ${{ vars.BOARDING_CITY }}
+      DESTINATION_CITY: ${{ vars.DESTINATION_CITY }}
+      DATE_OF_JOURNEY: ${{ vars.DATE_OF_JOURNEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify env file exists
+        run: |
+          echo "TEST_ENV=$TEST_ENV"
+          ls -la
+          test -f ".env.$TEST_ENV" || exit 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        run: |
+          if [ "${{ github.event.inputs.testType || 'all' }}" = "smoke" ]; then
+            npx playwright test --grep "@smoke"
+          elif [ "${{ github.event.inputs.testType || 'all' }}" = "regression" ]; then
+            npx playwright test --grep "@regression"
+          else
+            npx playwright test
+          fi
+
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ env.TEST_ENV }}
+          path: playwright-report/
+          retention-days: 30
